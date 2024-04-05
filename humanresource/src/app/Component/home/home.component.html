@@ -1,0 +1,223 @@
+<!-- <div class="container-fluid" style="margin: -1px;">
+    <div class="row text-end">
+        <div class="d-flex flex-row justify-content-end align-items-center">
+            <span style="color: #124567;"><mat-icon style="font-size:23px;">account_circle</mat-icon></span>
+            <label class="fst-italic" style="color: #124567;"><b>Welcome {{fullName}}</b></label>
+        </div>
+    </div>
+</div> -->
+
+<section id="hero">
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row text-end">
+            <div class="d-flex flex-row justify-content-end align-items-center">
+                <span style="color: #124567;"><mat-icon style="font-size:23px;">account_circle</mat-icon></span>
+                <label class="fst-italic" style="color: #124567;"><b>Welcome {{fullName}}</b></label>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-lg-12">
+                <mat-card>
+                    <div class="card-header backg">
+                        <h4 class="card-title"><mat-icon>content_copy</mat-icon>&nbsp;&nbsp;Candidate Interview Schedule
+                            Status</h4>
+                        <p class="card-category">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;New
+                            candidate on {{today | date:'fullDate'}}</p>
+                    </div>
+                    <mat-card-content>
+
+                        <div class="card-body table-responsive mt-3">
+                            <table mat-table [dataSource]="dataSource" matSort>
+                                <ng-container matColumnDef="candidateFullName">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Candidate</th>
+                                    <td mat-cell *matCellDef="let row">{{row.candidateFullName}}</td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="modeNo">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Mode</th>
+                                    <td mat-cell *matCellDef="let row">{{row.modeNo}}</td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="interviewerName">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Interviewer</th>
+                                    <td mat-cell *matCellDef="let row">{{row.interviewerName}}</td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="roundDate">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+                                    <td mat-cell *matCellDef="let row">{{row.roundDate | date:'mediumDate' }}</td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="roundTime">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Time</th>
+                                    <td mat-cell *matCellDef="let row">{{row.roundTime}}</td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="roundType">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Round</th>
+                                    <td mat-cell *matCellDef="let row">{{row.roundType}}</td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="createdBy">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>HR</th>
+                                    <td mat-cell *matCellDef="let row">{{row.scheduledCreatedByName}}</td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="candidateCreatedByName">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Created By</th>
+                                    <td mat-cell *matCellDef="let row">{{row.candidateCreatedByName}}</td>
+                                </ng-container>
+
+                               
+
+
+
+
+
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                                  <!-- Row shown when there is no matching data. -->
+                                <tr class="mat-row text-center" *matNoDataRow>
+                                    <td class="mat-cell" colspan="8">No scheduled interviews</td>
+                                </tr>
+
+                                <ng-container matColumnDef="action">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header colspan="2"> Action </th>
+                                    <td mat-cell *matCellDef="let row" colspan="2">
+                                        <button *ngIf="row.interviewerEmployeeId<1"
+                                            (click)="updateInterviewdetailsOfCandidate(row.scheduledId)"
+                                            mat-icon-button color="primary" matTooltip="Update Schedule Interview">
+                                            <mat-icon class="icon-display">edit</mat-icon>
+                                        </button>
+
+                                        <button *ngIf="row.interviewerEmployeeId && displaymodel"
+                                            (click)="updateScheduleDetails(row.scheduledId)" mat-icon-button 
+                                            [style.color]="'green'"  matTooltip="Reschedule">
+                                            <mat-icon class="icon-display">update</mat-icon>
+                                        </button>
+                                        <button *ngIf="row.interviewerEmployeeId" mat-icon-button [matMenuTriggerFor]="menu"
+                                            aria-label="Example icon-button with a menu">
+                                            <mat-icon color="warn">more_vert</mat-icon>
+                                        </button>
+                                        <mat-menu #menu="matMenu">
+
+                                            <button mat-menu-item
+                                                (click)="finalSelection(row.scheduledId, row.candidateUniqueNumber,row.candidateFullName,row.roundType, row.roundDetails,row.interviewerEmployeeId, row.profileId)">
+                                                <mat-icon [ngStyle]="{'color':'green'}">done_all</mat-icon>
+                                                <span>Selected</span>
+                                            </button>
+                                            <button mat-menu-item
+                                                (click)="selectionDailog(row.scheduledId, row.candidateUniqueNumber, row.profileId, row.candidateFullName,row.roundDetails)">
+                                                <mat-icon color="primary">next_week</mat-icon>
+                                                <span>Next Round</span>
+                                            </button>
+
+                                            <button mat-menu-item
+                                            (click)="onholdCandidateInterview(row.scheduledId, row.candidateUniqueNumber,row.candidateFullName, row.roundDetails,row.interviewerEmployeeId, row.profileId)">
+                                            <mat-icon style="color: #8e24aa;">pan_tool</mat-icon>
+                                            <span>On-hold</span>
+                                        </button>
+                                            <button mat-menu-item
+                                                (click)="rejectionDialog(row.scheduledId, row.candidateUniqueNumber,row.candidateFullName,row.roundDetails ,row.interviewerEmployeeId,row.profileId)">
+                                                <mat-icon color="warn">thumb_down</mat-icon>
+                                                <span>Rejected</span>
+                                            </button>
+                                        </mat-menu>
+                                        <!-- <button (click) = "selectionDailog(row.scheduledInterviewId, row.candidateUniqueNumber, row.candidateFullName, row.round1Hr, $event)"   mat-icon-button [ngStyle]="{'color':'green'}">
+                                            <mat-icon class="icon-display">done_all</mat-icon>
+                                        </button>
+                                            
+                                        <button (click) = "rejectionDialog(row.scheduledInterviewId, row.candidateUniqueNumber,row.candidateFullName, row.round1Hr,$event )"mat-icon-button color="warn">
+                                            <mat-icon class="icon-display">thumb_down</mat-icon>
+                                        </button> -->
+                                    </td>
+                                </ng-container>
+                            </table>
+                        </div>
+
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+
+        <div class="row mt-4" *ngIf="displaymodel">
+            <div class="col-lg-12">
+                <mat-card>
+
+                    <div class="card-header backg">
+                        <div class="row">
+                            <div class="col-8">
+                                <h4 class="card-title"><mat-icon>calendar_month</mat-icon>&nbsp;&nbsp;Update Joining Date
+                                </h4>
+                                <p class="card-category">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;New
+                                    candidate on {{today | date:'fullDate'}}</p>
+                            </div>
+                            <div class="col-4 text-end">
+                                <button (click)="exportToExcel()" mat-button style="color: white;"
+                                    aria-label="Example icon button with a menu icon" matTooltip="Export File"
+                                    [matTooltipPosition]="position.value!"><mat-icon>cloud_download</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <mat-card-content>
+
+                        <div class="card-body table-responsive mt-3">
+                            <table mat-table [dataSource]="dataSource1" matSort>
+
+                                <ng-container matColumnDef="candidateUniqueNumber">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Candidate Id</th>
+                                    <td mat-cell *matCellDef="let row">{{row.candidateUniqueNumber}}</td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="candidateFullName">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Candidate</th>
+                                    <td mat-cell *matCellDef="let row">{{row.candidateFullName}}</td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="roundDate">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+                                    <td mat-cell *matCellDef="let row">{{row.roundDate | date:'mediumDate' }}</td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="days">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Days</th>
+                                    <td mat-cell *matCellDef="let row">{{row.days}}</td>
+                                </ng-container>
+
+                              
+
+
+                                <ng-container matColumnDef="action">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Action </th>
+                                    <td mat-cell *matCellDef="let row">
+
+                                        <button
+                                            (click)="editCandidateJoiningDate(row.scheduledId,row.candidateUniqueNumber, row.candidateFullName, row.joiningDate)"
+                                            mat-icon-button style="color: green; ">
+                                            <mat-icon matSuffix>edit_attributes</mat-icon>
+                                            &nbsp; &nbsp;
+                                        </button>
+
+                                    </td>
+                                </ng-container>
+
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns1;"></tr>
+
+                                 <!-- Row shown when there is no matching data. -->
+                                 <tr class="mat-row text-center" *matNoDataRow>
+                                    <td class="mat-cell" colspan="8">No Record Found</td>
+                                </tr>
+
+                            </table>
+
+                        </div>
+
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+</section>

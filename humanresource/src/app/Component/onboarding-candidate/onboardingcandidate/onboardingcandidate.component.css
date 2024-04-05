@@ -1,0 +1,31 @@
+.sub-container {
+    display: flex;
+    flex-direction: column;
+    
+}
+
+
+
+.example{
+display: flex;
+align-content: center;
+align-items: center;
+/* color: #124265; */
+}
+
+h3{
+    color:  #124265;
+    font-weight: 500;
+}
+
+.mat-checkbox{
+    margin-right: 5px;
+    margin-bottom: 5px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.required:after {
+    content: " *";
+    color: red;
+    
+   } 

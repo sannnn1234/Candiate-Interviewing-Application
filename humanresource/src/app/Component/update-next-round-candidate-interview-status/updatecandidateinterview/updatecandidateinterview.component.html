@@ -1,0 +1,131 @@
+
+<section id="hero" class=" align-items-center">
+    <div class="container mt-5"  data-aos="fade-up" data-aos-delay="100">
+        <form [formGroup]= "updateSchedule" (ngSubmit)="OnSubmit()">
+            <div class="row  justify-content-center">
+                <h1 class="page-title text-center">Schedule Candidate Interview Information</h1>
+               
+                <div class="col-2"></div>
+                <div class="col-md-6 sub-container form-group">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Candidate Full Name</mat-label>
+                        <input matInput  name="candidateFullName" formControlName="candidateFullName" [(ngModel)]="scheduleInteview.candidateFullName">
+                        <mat-icon matSuffix>person</mat-icon>
+                        <mat-hint style="color: red;" *ngIf="(CandidateFullName.touched || CandidateFullName.dirty ) &&
+                        CandidateFullName.errors">
+                        <span *ngIf="CandidateFullName.errors?.['required']">please enter Candidate Full Name</span>
+                        </mat-hint>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row  justify-content-center">
+                <div class="col-md-4 sub-container">
+                    
+                    <mat-form-field appearance="outline">
+                        <mat-label>Department</mat-label>
+                        <mat-select  name="departmentId" formControlName="department" [(ngModel)]="scheduleInteview.departmentId">
+                        <mat-option [value]="item.departmentId" *ngFor="let item of departmentprofile">{{item.department}}</mat-option> 
+                        </mat-select>
+                        <mat-hint style="color: red;" *ngIf="(Department.touched || Department.dirty ) && Department.errors">
+                            <span *ngIf="Department.errors?.['required']">please select Department</span>
+                        </mat-hint>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Date:MM/DD/YYYY</mat-label>
+                        <input matInput [matDatepicker]="picker" [min]="minDate" name="roundDate" formControlName="roundDate" [(ngModel)]="scheduleInteview.roundDate">
+                        <mat-datepicker-toggle matSuffix [for]="picker">today</mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                           <mat-hint style="color: red;" *ngIf="(RoundDate.touched || RoundDate.dirty ) && RoundDate.errors">
+                            <span *ngIf="RoundDate.errors?.['required']">please select RoundDate</span>
+                        </mat-hint>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="mb-4">
+                        <mat-label>Interview Mode type</mat-label>
+                        <mat-select  name="modeNo" formControlName="modeNo" [(ngModel)]="scheduleInteview.modeNo" (selectionChange)="videoLinkDisplay()">
+                            <mat-option value='{{item}}' *ngFor="let item of interviewlist">{{item}}</mat-option> 
+                            </mat-select>
+                        <mat-hint style="color: red;" *ngIf="(Mode.touched || Mode.dirty ) && Mode.errors">
+                            <span *ngIf="Mode.errors?.['required']">please select Mode</span>
+                        </mat-hint>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" *ngIf="displayVideoslink">
+                        <mat-label>ICS File*</mat-label>
+                        <input matInput disabled>
+                        <input (change)="selectResume($event)" #fileInput type="file" id="file" accept="text/calendar">
+                        <input type="hidden" name="icsFile" formControlName="icsFile" [(ngModel)]="scheduleInteview.icsFile" />
+                        <mat-icon matSuffix>attach_file</mat-icon>
+                    </mat-form-field>
+                 
+                    
+                    
+                    
+                      
+                </div>
+                <div class="col-md-4 sub-container">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Profile</mat-label>
+                        <mat-select  name="profileId" formControlName="profile" [(ngModel)]="scheduleInteview.profileId" (selectionChange)=" profileInterviewer()">
+                        <mat-option [value]="item.profileId" *ngFor="let item of profiledetails">{{item.profile}}</mat-option> 
+                        </mat-select>
+                        <mat-hint style="color: red;" *ngIf="(Profile.touched || Profile.dirty ) && Profile.errors">
+                            <span *ngIf="Profile.errors?.['required']">please select Profile</span>
+                        </mat-hint>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Time</mat-label>
+                        <input matInput [ngxTimepicker]="toggleTimepicker" name="roundTime" formControlName="roundTime" [(ngModel)]="scheduleInteview.roundTime">
+                        <ngx-material-timepicker-toggle matSuffix  [for]="toggleTimepicker"></ngx-material-timepicker-toggle>
+                        <ngx-material-timepicker #toggleTimepicker></ngx-material-timepicker>
+                        <mat-hint style="color: red;" *ngIf="(RoundTime.touched || RoundTime.dirty ) && RoundTime.errors">
+                            <span *ngIf="RoundTime.errors?.['required']">please select Round Time</span>
+                        </mat-hint>
+                    </mat-form-field>
+
+                    <div *ngIf="displayVideoslink" class="sub-container">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Video Link Details</mat-label>
+                            <textarea matInput name="videoLinkDetails" formControlName="videoLinkDetails"  [(ngModel)]="scheduleInteview.videoLinkDetails"></textarea>
+                            <mat-icon matSuffix> insert_link</mat-icon>
+                            <mat-hint style="color: red;" *ngIf="(VideoLink.touched || VideoLink.dirty) && VideoLink.errors">
+                                <span *ngIf="VideoLink.errors?.['required']">please enter VideoLink</span>
+                            </mat-hint>
+                        </mat-form-field>
+                    </div>        
+                    
+                   
+                </div>
+            </div> 
+            <div class="row  justify-content-center">
+                <h1 class="page-title text-center">Round Information</h1>
+                <div class="col-md-4 sub-container">
+                   
+                  
+                     <mat-form-field appearance="outline">
+                         <mat-label>Interviewer</mat-label>
+                         <mat-select  name="interviewerName" formControlName="interviewerName" [(ngModel)]="scheduleInteview.interviewerEmployeeId">
+                             <mat-option [value]="interviewern.empId" *ngFor="let interviewern of interviewernames">{{ interviewern.fullName }}</mat-option> 
+                             </mat-select>
+                         <mat-hint style="color: red;" *ngIf="(InterviewerName.touched || InterviewerName.dirty ) && InterviewerName.errors">
+                             <span *ngIf="InterviewerName.errors?.['required']">please select Interviewer Name</span>
+                         </mat-hint>
+                     </mat-form-field>   
+                    
+                      
+                </div>
+                <div class="col-md-4 sub-container">
+                </div>
+                <div class="row justify-content-center mt-2">
+                    <button type="submit" class="btn btn-sm px-4 py-2  w-auto text-white" [style.background-color]="'#124265'" [disabled]="isProcess">Update
+                        <span class="mt-2"*ngIf="isProcess" class="spinner-border spinner-border-sm text-white "></span>
+                    </button>
+                    <button type="reset" class="btn btn-sm px-4 py-2  ms-2 w-auto text-white btn-secondary"  onclick="history.back()">Back</button>
+                </div>  
+            </div>     
+         
+        </form>
+            
+    </div>
+</section>

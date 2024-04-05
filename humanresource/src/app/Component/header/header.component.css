@@ -1,0 +1,36 @@
+*{
+    padding: 0;
+}
+
+/* #header {
+display: flex;
+background: url("/assets/assets/img/headers_waves.svg");
+background-size: cover;
+background-position: center;
+background-repeat: no-repeat;
+text-align: center;
+} */
+
+
+#navbar > ul > li > a{
+ text-decoration: none;
+}
+
+#navbar > ul > li> ul > li > a{
+    text-decoration: none;
+}
+
+.text-animation {
+    white-space: nowrap;
+    overflow: hidden;
+    animation: moveAnimation 5s linear infinite;
+  }
+  
+  @keyframes moveAnimation {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(calc(100% + 20px)); /* Adjust the value as needed */
+    }
+  }

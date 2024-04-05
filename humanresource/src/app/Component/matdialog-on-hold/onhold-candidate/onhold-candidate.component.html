@@ -1,0 +1,38 @@
+<div class="card-header example-full-width  backg">
+    <h4 class="card-title"><mat-icon>library_books</mat-icon>&nbsp;&nbsp;On-hold Candidate</h4>
+  </div>
+
+  <mat-dialog-content class="mat-typography mt-3">
+    <form [formGroup]= "interviewSchedules">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Candidate Unique Number</th>
+            <th scope="col">Candidate</th>
+            <th scope="col">Current Round</th>
+            <th scope="col" *ngIf="nextroundName">Next Round</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{scheduledInterview.candidateUniqueNumber}}</td>
+            <td>{{scheduledInterview.candidateFullName}}</td> 
+            <td>{{roundType}}</td> 
+            <td *ngIf="nextroundName">{{nextroundName}}</td> 
+            <td><button mat-icon-button color="warn" (click)="OnHoldCandidateInterview(scheduledInterview.scheduledInterviewId, scheduledInterview.roundDetails, candidateUniqueNumber)"><mat-icon>arrow_forward_ios</mat-icon></button></td>
+          </tr>
+          </tbody>
+      </table>
+      <div class="row justify-content-start">
+        <mat-form-field appearance="outline" class="mt-3" style="width:550px;">
+          <mat-label>Feedback</mat-label>
+          <textarea matInput name="constructiveFeedback" formControlName="constructiveFeedback"  [(ngModel)]="scheduledInterview.constructiveFeedback"></textarea>
+          <mat-hint style="color: red;" 
+                  *ngIf="(ConstructiveFeedback.touched || ConstructiveFeedback.dirty ) && ConstructiveFeedback.errors">    
+              <span *ngIf="ConstructiveFeedback.errors?.['required']">please mention the Feedback</span>
+          </mat-hint>
+        </mat-form-field>
+      </div>
+    </form>
+  </mat-dialog-content>

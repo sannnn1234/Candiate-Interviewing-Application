@@ -1,0 +1,30 @@
+<div class="card-header example-full-width  backg">
+    <h4 class="card-title"><mat-icon>chat</mat-icon>&nbsp;&nbsp;Feedback</h4>
+</div>
+<mat-dialog-content class="mat-typography mt-3">
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Candidate Id</th>
+            <th scope="col">Candidate</th>
+            <th scope="col">Round</th>
+            <th scope="col">Status</th>
+            <th scope="col">Feedback</th>
+            <th scope="col">Not Joining Feedback</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="scheduledFeedback.length === 0">
+            <td colspan="6" class="text-center">No data</td>
+          </tr>
+          <tr *ngFor="let feedback of scheduledFeedback">
+            <td>{{feedback.candidateUniqueNumber}}</td>
+            <td>{{feedback.candidateFullName}}</td>
+            <td>{{feedback.roundName}}</td>
+            <td>{{feedback.roundStatus}}</td>
+            <td>{{feedback.constructiveFeedback}}</td> 
+            <td>{{feedback.joiningFeedback}}</td> 
+            </tr>
+          </tbody>
+      </table>
+</mat-dialog-content>
