@@ -1,0 +1,105 @@
+<section id="hero" class="align-items-center">
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <form [formGroup]= "createVacancyDetails" (ngSubmit)="vacancyDetails()">         
+            <div class="row mt-2 justify-content-center">
+                <h1 class="page-title text-center">Vacancy Details</h1>  
+                <div class="col-md-4 sub-container">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Department</mat-label>
+                        <mat-select  name="department" formControlName="department" [(ngModel)]="vacancydetails.department">
+                        <mat-option [value]="item.department" *ngFor="let item of departmentprofile">{{item.department}}</mat-option> 
+                        </mat-select>
+                        <mat-hint style="color: red;" *ngIf="(Department.touched || Department.dirty ) && Department.errors">
+                            <span *ngIf="Department.errors?.['required']">please select Department</span>
+                        </mat-hint>
+                    </mat-form-field>
+                    
+                    <mat-form-field appearance="outline">
+                        <mat-label>Position</mat-label>
+                        <input matInput name="position" formControlName="position" [(ngModel)]="vacancydetails.position">
+                        <mat-icon matSuffix>desktop_mac</mat-icon>
+                        <mat-hint style="color: red;" *ngIf="(Position.touched || Position.dirty ) && Position.errors">
+                        <span *ngIf="Position.errors?.['required']">please enter Position</span>
+                        </mat-hint>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Experience</mat-label>
+                        <input matInput name="experience" formControlName="experience" [(ngModel)]="vacancydetails.experience">
+                        <mat-icon matSuffix>note_add</mat-icon>
+                        <mat-hint style="color: red;" *ngIf="(Experience.touched || Experience.dirty ) && Experience.errors">
+                        <span *ngIf="Experience.errors?.['required']">please enter Experience</span>
+                       
+                        </mat-hint>
+                    </mat-form-field>
+                    
+                    <mat-form-field appearance="outline">
+                        <mat-label>Year</mat-label>
+                        <input matInput  name="year" formControlName="year" [(ngModel)]="vacancydetails.year">
+                        <mat-icon matSuffix>date_range</mat-icon>
+                        <mat-hint style="color: red;" *ngIf="(Year.touched || Year.dirty ) &&
+                        Target.errors">
+                        <span *ngIf="Year.errors?.['required']">please enter Year</span>
+                        </mat-hint>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Budget/Max Salary</mat-label>
+                        <input matInput type="number" name="maxSalary" formControlName="maxsalary" [(ngModel)]="vacancydetails.maxSalary">
+                        <mat-icon matSuffix> attach_money</mat-icon>
+                        <mat-hint style="color: red;" *ngIf="(MaxSalary.touched || MaxSalary.dirty ) && MaxSalary.errors">
+                        <span *ngIf="MaxSalary.errors?.['required']">please enter MaxSalary</span>
+                        </mat-hint>
+                    </mat-form-field>
+                                
+                </div>
+                <div class="col-md-4 sub-container">
+                   
+                    <mat-form-field appearance="outline">
+                        <mat-label>Profile</mat-label>
+                        <mat-select  name="profile" formControlName="profile" [(ngModel)]="vacancydetails.profile">
+                        <mat-option value='{{item.profile}}' *ngFor="let item of profile">{{item.profile}}</mat-option> 
+                        </mat-select>
+                        <mat-hint style="color: red;" *ngIf="(Profile.touched || Profile.dirty ) && Profile.errors">
+                            <span *ngIf="Profile.errors?.['required']">please select Profile</span>
+                        </mat-hint>
+                    </mat-form-field>
+                                
+                    <mat-form-field appearance="outline">
+                        <mat-label>Target</mat-label>
+                        <input matInput  name="target" formControlName="target" [(ngModel)]="vacancydetails.target">
+                        <mat-icon matSuffix>control_point</mat-icon>
+                        <mat-hint style="color: red;" *ngIf="(Target.touched || Target.dirty ) &&
+                        Target.errors">
+                        <span *ngIf="Target.errors?.['required']">please enter Target</span>
+                        </mat-hint>
+                    </mat-form-field>
+                
+                    <mat-form-field appearance="outline">
+                        <mat-label>Positions Filled</mat-label>
+                        <input matInput type="number" name="positionsFilled" formControlName="positionsfilled" [(ngModel)]="vacancydetails.positionsFilled">
+                        <mat-icon matSuffix>block</mat-icon>
+                        <mat-hint style="color: red;" *ngIf="(PositionsFilled.touched || PositionsFilled.dirty ) &&  PositionsFilled.errors">
+                        <span *ngIf="PositionsFilled.errors?.['required']">please enter Positions Filled</span>
+                        </mat-hint>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Location</mat-label>
+                        <input matInput  name="location" formControlName="location" [(ngModel)]="vacancydetails.location">
+                        <mat-icon matSuffix> location_on</mat-icon>
+                        <mat-hint style="color: red;" *ngIf="(Location.touched || Location.dirty ) &&
+                        Target.errors">
+                        <span *ngIf="Location.errors?.['required']">please enter Location</span>
+                        </mat-hint>
+                    </mat-form-field>
+                </div>
+                <div class="row justify-content-center mt-3">
+                    <button type="submit" class="btn btn-sm px-4 py-2  w-auto text-white" [style.background-color]="'#124265'">Create</button>
+                    <button type="reset" class="btn btn-sm px-4 py-2  ms-2 w-auto  btn-danger">Reset</button>
+                    <button type="reset" class="btn btn-sm px-4 py-2  ms-2 w-auto text-white btn-secondary"  onclick="history.back()">Back</button>
+                </div> 
+            </div>
+        </form>
+    </div>
+</section>

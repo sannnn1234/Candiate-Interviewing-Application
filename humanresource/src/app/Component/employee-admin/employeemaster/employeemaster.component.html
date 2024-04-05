@@ -1,0 +1,107 @@
+<section id="hero" class="align-items-center">
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+         
+        <div class="row mt-3 justify-content-start">
+            <h1 class="page-title text-center ">Employee Details</h1> 
+            
+            <div class="col-md-6">
+                <button mat-raised-button [routerLink]="['/employee-details']" [style.background-color]="'#124265'" class="text-white">Create Employee</button>
+            </div>
+            <div class="col-md-6 text-end">
+                <mat-form-field>
+                <mat-label>Search</mat-label>
+                <input matInput (keyup)="applyFilter($event)" placeholder="search" #input>
+                </mat-form-field>
+
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table mat-table [dataSource]="dataSource" matSort [style]="{'background':'transparent'}">
+
+                <!-- empId Column -->
+                <ng-container matColumnDef="empId">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Employee Id</th>
+                <td mat-cell *matCellDef="let row"> {{row.empId}} </td>
+                </ng-container>
+
+                <!-- fullName Column -->
+                <ng-container matColumnDef="fullName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Employee Name</th>
+                    <td mat-cell *matCellDef="let row"> {{row.fullName}} </td>
+                </ng-container>
+
+                <!-- email Column -->
+                <ng-container matColumnDef="email">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Email Address</th>
+                <td mat-cell *matCellDef="let row"> {{row.email}}</td>
+                </ng-container>
+
+                <!-- password Column -->
+                <!-- <ng-container matColumnDef="password">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Password </th>
+                <td mat-cell *matCellDef="let row"> {{row.password}} </td>
+                </ng-container> -->
+                  <!-- Contact Number Column -->
+                <!-- <ng-container matColumnDef="empPhone">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Contact Number</th>
+                    <td mat-cell *matCellDef="let row"> {{row.empPhone}}</td>
+                </ng-container> -->
+
+                <!-- active Column -->
+                <ng-container matColumnDef="active">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Active</th>
+                <td mat-cell *matCellDef="let row"> {{row.active}} </td>
+                </ng-container>
+                   
+                <!-- groupDescription Column -->
+                <ng-container matColumnDef="groupDescription">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Group Description</th>
+                    <td mat-cell *matCellDef="let row"> {{row.groupDescription}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="profileId">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Profile</th>
+                    <td mat-cell *matCellDef="let row" class="key-cell"> {{row.profileId}} </td>
+                </ng-container>
+
+               
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+                <!-- Row shown when there is no matching data. -->
+                <tr class="mat-row text-center" *matNoDataRow>
+                <td class="mat-cell" colspan="10">No data matching the filter "{{input.value}}"</td>
+                </tr>
+
+                  <!-- Edit and Delete Column. -->
+                <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Action </th>
+                    <td mat-cell *matCellDef="let row">
+                    <!-- <button (click) = "updateEmployeeDetails(row.empId)" mat-icon-button color="primary">
+                    <mat-icon matSuffix>edit</mat-icon>
+                    </button> -->
+
+                    <div *ngIf="row.active=='Y'" class="gap-2">
+                        <mat-icon aria-hidden="false" style="font-size: 3vh;" 
+                        (click)="updateEmployeeDetails(row.empId)" aria-label="Active" fontIcon="home" matTooltip="Edit User"
+                        class="text-btn">edit</mat-icon>
+                        <mat-icon aria-hidden="false" aria-label="Active" fontIcon="home" matTooltip="Active"
+                        class="text-success ms-2 " style="font-size: 2.8vh;">circle</mat-icon>
+                        </div>
+                        <div *ngIf="row.active=='N'">
+                        <mat-icon aria-hidden="false" style="font-size: 3vh;"
+                        (click)="updateEmployeeDetails(row.empId)" aria-label="Active" fontIcon="home" matTooltip="Edit User"
+                        class="text-btn">edit</mat-icon>
+                        <mat-icon aria-hidden="false" aria-label="Active" fontIcon="home" matTooltip="In-Active"
+                        class="text-danger ms-2 " style="font-size: 2.8vh;">circle</mat-icon>
+                    </div>
+                   
+                    </td>
+                </ng-container >
+            </table>
+
+            <mat-paginator [pageSizeOptions]="[10,20]" aria-label="select page"></mat-paginator>
+        </div>
+    </div>
+</section>
+

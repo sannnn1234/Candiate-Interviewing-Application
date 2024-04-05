@@ -1,0 +1,49 @@
+<div class="card-header example-full-width  backg">
+    <h4 class="card-title"><mat-icon>comment</mat-icon>&nbsp;&nbsp;Rejected Candidate</h4>
+</div>
+<mat-dialog-content class="mat-typography mt-3">
+    <form [formGroup]= "interviewSchedules">
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Candidate Unique Number</th>
+                <th scope="col">Candidate</th>
+                <th scope="col">Rejected</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                  <td>{{scheduledInterview.candidateUniqueNumber}}</td>
+                  <td>{{candidateFullName}}</td> 
+                  <td> <button (click) = 'rejectedCandidate(scheduledInterview.scheduledInterviewId, scheduledInterview.roundDetails)' mat-button color="warn" mat-dialog-close><mat-icon>close</mat-icon></button></td>
+              </tr>
+              </tbody>
+          </table>
+          <mat-form-field appearance="outline">
+            <mat-label>Communication Rating(1/10)</mat-label>
+            <input matInput  name="communicationRating" formControlName="communicationRating" [(ngModel)]="scheduledInterview.communicationRating" pattern="^\d+(\.\d{1,2})?$">
+            <!-- <mat-icon matSuffix>description</mat-icon> -->
+            <mat-hint style="color: red;" *ngIf="(CommunicationRating.touched || CommunicationRating.dirty ) &&
+            CommunicationRating.errors">
+            <span *ngIf="CommunicationRating.errors?.['required']">please mention the communication rating  between 1 to 10</span>
+            <span *ngIf="CommunicationRating.errors?.['pattern']">Please enter a valid number with up to 2 decimal places</span>
+            </mat-hint>
+          </mat-form-field>     
+          <div class="row justify-content-start">
+
+            <mat-form-field appearance="outline" class="mt-3" style="width:550px;">
+              <mat-label>Feedback</mat-label>
+              <textarea matInput name="constructiveFeedback" formControlName="constructiveFeedback"  [(ngModel)]="scheduledInterview.constructiveFeedback"></textarea>
+              <!-- <mat-icon matSuffix>view_list</mat-icon> -->
+              <mat-hint style="color: red;" 
+                      *ngIf="(ConstructiveFeedback.touched || ConstructiveFeedback.dirty ) && ConstructiveFeedback.errors">    
+                  <span *ngIf="ConstructiveFeedback.errors?.['required']">please mention the Feedback</span>
+              </mat-hint>
+            </mat-form-field>
+          </div>
+         
+    </form>
+</mat-dialog-content>
+
+
+    
