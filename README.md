@@ -1,8 +1,8 @@
-# **Candidate Interviewing Application – Detailed Documentation**
+# Candidate Interviewing Application – Detailed Documentation
 
 A complete HR & Interview management system allowing HR, Admin, and Interviewers to manage candidates, schedule interviews, provide feedback, and track hiring status.
 
-
+---
 
 ## Table of Contents
 
@@ -13,128 +13,107 @@ A complete HR & Interview management system allowing HR, Admin, and Interviewers
 5. [System Architecture](#system-architecture)
 6. [Database Schema (ER Diagram Description)](#database-schema-er-diagram-description)
 7. [API Design (Spring Boot)](#api-design-spring-boot)
-8. [Email Notification Flow](#email-notification-flow)
-9. [Frontend Architecture (Angular)](#frontend-architecture-angular)
-10. [Interview Workflow](#interview-workflow)
-11. [Installation & Setup](#installation--setup)
-12. [Future Enhancements](#future-enhancements)
+8. [Spring Security – JWT Authentication](#spring-security--jwt-authentication)
+9. [Email Notification Flow](#email-notification-flow)
+10. [Frontend Architecture (Angular)](#frontend-architecture-angular)
+11. [Interview Workflow](#interview-workflow)
+12. [Installation & Setup](#installation--setup)
+13. [Future Enhancements](#future-enhancements)
 
 ---
 
-# **1. Overview**
+# 1. Overview
 
 The **Candidate Interviewing Application** allows HR teams to manage recruitment end-to-end, from creating candidate profiles to scheduling interviews, collecting feedback, and confirming joining details.
 
-This document describes system functionalities, architecture, API, workflow, and setup.
+This document describes system functionalities, architecture, API design, workflow, and setup.
 
 ---
 
-# **2. Technology Stack**
+# 2. Technology Stack
 
-## **Backend**
+## Backend
 
-| Component          | Version | Description                |
-| ------------------ | ------- | -------------------------- |
-| JDK                | 1.8     | Java Development Kit       |
-| Spring Boot        | 2.x     | Backend framework          |
-| Spring Data JPA    |         | ORM + database interaction |
-| Spring Security    |         | Login & role-based access  |
-| Spring Mail        |         | Email sending              |
-| MySQL / PostgreSQL | Latest  | Database                   |
+| Component             | Version | Description                    |
+| --------------------- | ------- | ------------------------------ |
+| JDK                   | 1.8     | Java Development Kit           |
+| Spring Boot           | 2.x     | Backend framework              |
+| Spring Data JPA       | —       | ORM and DB interaction         |
+| Spring Security (JWT) | —       | Authentication & Authorization |
+| Spring Mail           | —       | Email notifications            |
+| MySQL / PostgreSQL    | Latest  | Database                       |
 
----
+## Frontend
 
-## **Frontend**
-
-| Technology           | Description          |
-| -------------------- | -------------------- |
-| Angular 12+          | Frontend framework   |
-| TypeScript           | Programming language |
-| Bootstrap / Material | UI styling           |
+| Technology           | Description        |
+| -------------------- | ------------------ |
+| Angular 12+          | Frontend framework |
+| TypeScript           | Application logic  |
+| Bootstrap / Material | UI styling         |
 
 ---
 
-# **3. System Features**
+# 3. System Features
 
-## **3.1 Candidate Management**
+## 3.1 Candidate Management
 
-* HR/Admin can create new candidate profiles.
-* View and update candidate information.
-* Assign multiple interview rounds.
+* Create and update candidate profiles.
+* Assign job profiles and departments.
+* Manage candidate status.
 
----
-
-## **3.2 Interview Scheduling**
+## 3.2 Interview Scheduling
 
 * HR schedules interviews and assigns interviewers.
-* Supports multiple rounds (Technical, HR, Managerial, etc.).
-* Rescheduling allowed by HR.
-* Email notification to candidate + interviewer.
+* Supports unlimited interview rounds.
+* Rescheduling supported.
+* Email notifications for schedule/reschedule.
+
+## 3.3 Interview Feedback
+
+* Interviewer can view assigned interviews.
+* Submit feedback for each round.
+* HR receives notification after submission.
+
+## 3.4 Post-Interview HR Actions
+
+* Final selection decision.
+* If selected → set joining date.
+* If not joining → capture reason.
+
+## 3.5 Configuration Management
+
+### Admin:
+
+* Manage Departments
+* Manage Job Profiles
+* Manage User Roles
+* Create Interview Rounds per Profile
+
+### HR/Admin:
+
+* Manage department–profile mapping
+* Define interview rounds
 
 ---
 
-## **3.3 Interview Feedback**
+# 4. User Roles & Permissions
 
-* Each interviewer sees:
-
-  * Candidate details
-  * Previous round feedback (if allowed)
-* Interviewer submits feedback:
-
-  * Shortlisted
-  * Selected
-  * On Hold
-  * Rejected
-* HR receives feedback via email.
+| Role            | Permissions                                                                   |
+| --------------- | ----------------------------------------------------------------------------- |
+| **Admin**       | Manage departments, profiles, roles, users, interview rounds                  |
+| **HR**          | Create/update candidates, schedule interviews, view feedback, joining details |
+| **Interviewer** | View interviews, submit feedback                                              |
 
 ---
 
-## **3.4 Post-Interview HR Actions**
-
-* HR updates final decision.
-* If candidate selected:
-
-  * Add joining date.
-* If candidate declines:
-
-  * Enter reason for not joining.
-
----
-
-## **3.5 Configuration Management**
-
-### Admin can:
-
-* Create/modify Departments
-* Create/modify Job Profiles
-* Manage Department–Profile mapping
-* Manage Users (HR, Interviewers)
-* Assign Roles
-
-### HR/Admin can:
-
-* Define interview rounds for each profile.
-
----
-
-# **4. User Roles & Permissions**
-
-| Role                           | Permissions                                                                                 |
-| ------------------------------ | ------------------------------------------------------------------------------------------- |
-| **Admin**                      | Manage departments, profiles, roles, employees, interview rounds                            |
-| **HR**                         | Create candidates, schedule/reschedule interviews, update joining details, receive feedback |
-| **Interviewer (Technical/HR)** | View assigned interviews, view candidate info, submit feedback                              |
-
----
-
-# **5. System Architecture**
+# 5. System Architecture
 
 ```
 Frontend (Angular)
        |
        | REST API (JSON)
        v
-Backend (Spring Boot)
+Backend (Spring Boot + JWT Security)
        |
        | JPA/Hibernate
        v
@@ -147,51 +126,51 @@ Email Notifications
 
 ---
 
-# **6. Database Schema (ER Diagram Description)**
+# 6. Database Schema (ER Diagram Description)
 
-### **Tables**
+## Tables Overview
 
-1. **users**
+### users
 
-   * id, name, email, password, role (HR/Interviewer/Admin)
+* id, name, email, password, role
 
-2. **departments**
+### departments
 
-   * id, name
+* id, name
 
-3. **profiles**
+### profiles
 
-   * id, profile_name
+* id, profile_name
 
-4. **department_profile**
+### department_profile
 
-   * id, department_id, profile_id
+* department_id, profile_id
 
-5. **candidates**
+### candidates
 
-   * id, name, email, phone, experience, profile_id, status
+* id, name, email, phone, experience, profile_id, status
 
-6. **interview_rounds**
+### interview_rounds
 
-   * id, profile_id, round_name, sequence_order
+* id, profile_id, round_name, sequence_order
 
-7. **interviews**
+### interviews
 
-   * id, candidate_id, round_id, interviewer_id, scheduled_time, status
+* id, candidate_id, round_id, interviewer_id, scheduled_time, status
 
-8. **feedback**
+### feedback
 
-   * id, interview_id, interviewer_id, rating, comments, action (Selected/Rejected/etc.)
+* id, interview_id, interviewer_id, rating, comments, action
 
-9. **joining_details**
+### joining_details
 
-   * id, candidate_id, joining_date, not_joining_reason
+* candidate_id, joining_date, not_joining_reason
 
 ---
 
-# **7. API Design (Spring Boot)**
+# 7. API Design (Spring Boot)
 
-### **Candidate APIs**
+## Candidate APIs
 
 | Method | Endpoint               | Description        |
 | ------ | ---------------------- | ------------------ |
@@ -200,28 +179,22 @@ Email Notifications
 | PUT    | `/api/candidates/{id}` | Update candidate   |
 | GET    | `/api/candidates`      | List candidates    |
 
----
+## Interview APIs
 
-### **Interview APIs**
+| Method | Endpoint                           | Description                    |
+| ------ | ---------------------------------- | ------------------------------ |
+| POST   | `/api/interviews/schedule`         | Schedule interview             |
+| PUT    | `/api/interviews/reschedule/{id}`  | Reschedule                     |
+| GET    | `/api/interviews/interviewer/{id}` | Get interviews for interviewer |
 
-| Method | Endpoint                           | Description             |
-| ------ | ---------------------------------- | ----------------------- |
-| POST   | `/api/interviews/schedule`         | Schedule interview      |
-| PUT    | `/api/interviews/reschedule/{id}`  | Reschedule              |
-| GET    | `/api/interviews/interviewer/{id}` | Get assigned interviews |
+## Feedback APIs
 
----
+| Method | Endpoint                       | Description             |
+| ------ | ------------------------------ | ----------------------- |
+| POST   | `/api/feedback`                | Submit feedback         |
+| GET    | `/api/feedback/candidate/{id}` | View candidate feedback |
 
-### **Feedback APIs**
-
-| Method | Endpoint                       | Description     |
-| ------ | ------------------------------ | --------------- |
-| POST   | `/api/feedback`                | Submit feedback |
-| GET    | `/api/feedback/candidate/{id}` | View feedback   |
-
----
-
-### **Config APIs (Admin/HR)**
+## Config APIs (Admin/HR)
 
 * `/api/departments`
 * `/api/profiles`
@@ -230,94 +203,100 @@ Email Notifications
 
 ---
 
-# **8. Email Notification Flow**
+# 8. Spring Security – JWT Authentication
 
-### **Triggered When:**
+## Key Features
 
-1. **Interview Scheduled**
+* JWT-based login and API authentication.
+* Role-based access control (Admin, HR, Interviewer).
+* Stateless API security using filters.
+* Bcrypt password hashing.
 
-   * Email → Candidate
-   * Email → Interviewer
+## Authentication Flow
 
-2. **Interview Rescheduled**
+```
+[User Login] → [Token Generated] → [Client Stores Token] →
+[Uses Bearer Token in Each Request] → [JWT Filter Validates] → [Access Granted]
+```
 
-   * Email → Candidate
-   * Email → Interviewer
+## Role-Based Access Example
 
-3. **Feedback Submitted**
+* `/api/admin/**` → ADMIN only
+* `/api/hr/**` → HR only
+* `/api/interviewer/**` → INTERVIEWER only
 
-   * Email → HR
+---
 
-### Email Template Example (Spring Mail)
+# 9. Email Notification Flow
+
+### Triggered when:
+
+1. Interview Scheduled
+2. Interview Rescheduled
+3. Feedback Submitted
+
+Example Template:
 
 ```
 Subject: Interview Scheduled for {{candidateName}}
-
-Dear {{candidateName}},
-Your interview for the position of {{profile}} has been scheduled on {{date}}.
+Dear {{candidateName}}, your interview for {{profile}} is on {{date}}.
 ```
 
 ---
 
-# **9. Frontend Architecture (Angular)**
+# 10. Frontend Architecture (Angular)
 
-### **Modules**
+## Modules
 
-* `auth` → login & role handling
-* `candidate` → create/view candidates
-* `interview` → schedule/reschedule
-* `feedback` → interviewer screens
-* `admin` → departments, profiles, employee roles
+* Auth Module
+* Candidate Module
+* Interview Module
+* Feedback Module
+* Admin Module
 
-### **Services**
+## Services
 
-* `candidate.service.ts`
-* `interview.service.ts`
-* `feedback.service.ts`
-* `email.service.ts`
+* candidate.service.ts
+* interview.service.ts
+* feedback.service.ts
+* email.service.ts
 
-### **UI Layout**
+## UI Screens
 
-* Dashboard (role-based)
+* Dashboard
 * Candidate List
 * Interview Calendar
-* Feedback Form
-* Admin Settings
+* Interview Feedback Form
+* Admin Config Management
 
 ---
 
-# **10. Interview Workflow**
+# 11. Interview Workflow
 
-1. **HR/Admin** creates candidate.
-2. **HR** assigns department & profile.
-3. System loads **rounds** for selected profile.
-4. HR schedules interview.
-5. Email notification sent.
-6. **Interviewer** sees interview in dashboard.
-7. Interviewer submits feedback.
-8. HR reviews feedback.
-9. If selected → HR sets joining date.
-10. If not joining → HR adds reason.
+1. HR creates candidate
+2. HR assigns department & profile
+3. System loads rounds
+4. HR schedules interview
+5. Email sent
+6. Interviewer submits feedback
+7. HR reviews
+8. If selected → joining date added
+9. If not joining → reason captured
 
 ---
 
-# **11. Installation & Setup**
+# 12. Installation & Setup
 
-## **Backend Setup**
+## Backend Setup
 
 ```
-git clone <repository>
+git clone <repo>
 cd backend
 mvn clean install
-```
-
-### **Run**
-
-```
 mvn spring-boot:run
 ```
 
-### **Environment Variables**
+### Environment Variables
 
 ```
 DB_URL=jdbc:mysql://localhost:3306/interviewdb
@@ -325,13 +304,11 @@ DB_USERNAME=root
 DB_PASSWORD=1234
 
 SPRING_MAIL_HOST=smtp.gmail.com
-SPRING_MAIL_USERNAME=xxxx@gmail.com
+SPRING_MAIL_USERNAME=xxx@gmail.com
 SPRING_MAIL_PASSWORD=appPassword
 ```
 
----
-
-## **Frontend Setup**
+## Frontend Setup
 
 ```
 cd frontend
@@ -341,12 +318,10 @@ ng serve --open
 
 ---
 
-# **12. Future Enhancements**
+# 13. Future Enhancements
 
-* JWT-based authentication
-* Video interview integration
-* Resume parser using AI
-* Automated reminder emails
-* Mobile App (Flutter/React Native)
-
----
+* Video interview integrations
+* AI-based resume parser
+* Automated reminders
+* Mobile app version
+* Analytics & dashboard reports
