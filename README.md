@@ -1,4 +1,4 @@
-# Candidate Interviewing Application – Detailed Documentation
+# Candidate Interviewing Application 
 
 A complete HR & Interview management system allowing HR, Admin, and Interviewers to manage candidates, schedule interviews, provide feedback, and track hiring status.
 
