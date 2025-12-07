@@ -41,7 +41,7 @@ This document describes system functionalities, architecture, API design, workfl
 | Spring Data JPA       | —       | ORM and DB interaction         |
 | Spring Security (JWT) | —       | Authentication & Authorization |
 | Spring Mail           | —       | Email notifications            |
-| MySQL / PostgreSQL    | Latest  | Database                       |
+| MySQL                 | Latest  | Database                       |
 
 ## Frontend
 
